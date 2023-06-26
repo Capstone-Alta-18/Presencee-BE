@@ -178,8 +178,6 @@ func (u *UserController) GetSingleUser(c echo.Context) error {
 	role := claims["role"].(string)
 
 	switch {
-	case role == "pegawai":
-		fallthrough
 	case role == "admin" || role == "Mahasiswa" || role == "Dosen":
 		return c.JSON(http.StatusOK, echo.Map{
 			"message": "success getting user",
@@ -194,7 +192,7 @@ func (u *UserController) GetBriefUsers(c echo.Context) error {
 	claims := u.jwtService.GetClaims(&c)
 	role := claims["role"].(string)
 
-	if role == "pegawai" {
+	if role == "Mahasiswa" {
 		return echo.NewHTTPError(http.StatusForbidden, utils.ErrDidntHavePermission.Error())
 	}
 
@@ -236,8 +234,9 @@ func (u *UserController) GetBriefUsers(c echo.Context) error {
 }
 
 func (u *UserController) UpdateUser(c echo.Context) error {
-	claims := u.jwtService.GetClaims(&c)
-	userID := uint(claims["user_id"].(float64))
+	userIDParam := c.Param("user_id")
+	userID64, err := strconv.ParseUint(userIDParam, 10, 0)
+	userID := uint(userID64)
 
 	user := new(payload.UserUpdateRequest)
 	if err := c.Bind(user); err != nil {
@@ -248,7 +247,7 @@ func (u *UserController) UpdateUser(c echo.Context) error {
 		return err
 	}
 
-	err := u.userService.UpdateUser(c.Request().Context(), userID, user)
+	err = u.userService.UpdateUser(c.Request().Context(), userID, user)
 	if err != nil {
 		switch err {
 		case utils.ErrUserNotFound:

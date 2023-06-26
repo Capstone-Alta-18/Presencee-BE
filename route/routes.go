@@ -52,7 +52,7 @@ func (r *Routes) Init(e *echo.Echo, conf map[string]string) {
 
 	usersWithAuth := users.Group("", jwtMiddleware)
 	usersWithAuth.GET("/", r.userController.GetBriefUsers)
-	usersWithAuth.PUT("/", r.userController.UpdateUser)
+	usersWithAuth.PUT("/:user_id/", r.userController.UpdateUser)
 	usersWithAuth.GET("/:user_id/", r.userController.GetSingleUser, jwtMiddleware)
 	usersWithAuth.DELETE("/:user_id/", r.userController.DeleteUser, jwtMiddleware)
 

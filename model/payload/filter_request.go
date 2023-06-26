@@ -15,14 +15,14 @@ type AbsenFilter struct {
 }
 
 type JadwalFilter struct {
-	ID             uint      `query:"id"`
-	MatakuliahID   uint      `query:"matakuliah_id"`
-	RoomID         uint      `query:"room_id"`
-	Sks            string    `query:"sks"`
-	JamMulaiAfter  time.Time `query:"jam_after"`
-	JamMulaiBefore time.Time `query:"jam_before"`
-	Name           string    `query:"name"`
-	Description    string    `query:"description"`
-	UserID         uint      `query:"user_id" form:"user_id"`
-	DosenID        uint      `query:"dosen_id" form:"dosen_id"`
+	ID           uint      `query:"id"`
+	MatakuliahID uint      `query:"matakuliah_id"`
+	RoomID       uint      `query:"room_id"`
+	Sks          string    `query:"sks"`
+	JamAfter     time.Time `query:"jam_after"`
+	JamBefore    time.Time `query:"jam_before"`
+	Name         string    `query:"name"`
+	Description  string    `query:"description"`
+	UserID       uint      `query:"user_id" form:"user_id"`
+	DosenID      uint      `query:"dosen_id" form:"dosen_id"`
 }

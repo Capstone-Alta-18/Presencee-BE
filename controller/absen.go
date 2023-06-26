@@ -49,7 +49,7 @@ func (u *AbsenController) CreateAbsen(c echo.Context) error {
 func (u *AbsenController) UpdateAbsen(c echo.Context) error {
 	claims := u.jwtService.GetClaims(&c)
 	role := claims["role"].(string)
-	if role != "admin" {
+	if role != "admin" && role != "Dosen" {
 		return echo.NewHTTPError(http.StatusForbidden, utils.ErrDidntHavePermission.Error())
 	}
 	absen := new(payload.UpdateAbsenRequest)
@@ -94,8 +94,6 @@ func (u *AbsenController) GetSingleAbsen(c echo.Context) error {
 	role := claims["role"].(string)
 
 	switch {
-	case role == "pegawai":
-		fallthrough
 	case role == "admin" || role == "Mahasiswa" || role == "Dosen":
 		return c.JSON(http.StatusOK, echo.Map{
 			"message": "success getting user",

@@ -94,8 +94,6 @@ func (u *JadwalController) GetSingleJadwal(c echo.Context) error {
 	role := claims["role"].(string)
 
 	switch {
-	case role == "pegawai":
-		fallthrough
 	case role == "admin" || role == "Mahasiswa" || role == "Dosen":
 		return c.JSON(http.StatusOK, echo.Map{
 			"message": "success getting user",
@@ -202,14 +200,14 @@ func (u *JadwalController) GetFilterJadwal(c echo.Context) error {
 	jamBeforeTime, err := time.Parse(time.RFC3339, jamBeforeStr)
 
 	filter := payload.JadwalFilter{
-		UserID:         uint(userID),
-		DosenID:        uint(dosenID),
-		MatakuliahID:   uint(matakuliahID),
-		RoomID:         uint(roomID),
-		Name:           c.QueryParam("name"),
-		ID:             uint(jadwalID),
-		JamMulaiAfter:  jamAfterTime,
-		JamMulaiBefore: jamBeforeTime,
+		UserID:       uint(userID),
+		DosenID:      uint(dosenID),
+		MatakuliahID: uint(matakuliahID),
+		RoomID:       uint(roomID),
+		Name:         c.QueryParam("name"),
+		ID:           uint(jadwalID),
+		JamAfter:     jamAfterTime,
+		JamBefore:    jamBeforeTime,
 	}
 
 	jadwal, count, err := u.jadwalService.GetFilterJadwals(c.Request().Context(), int(pageInt), int(limitInt), &filter)

@@ -90,12 +90,12 @@ func (u *JadwalRepositoryImpl) GetFilterJadwals(ctx context.Context, limit int, 
 		db = db.Where("name = ?", filter.Name)
 	}
 
-	if !filter.JamMulaiAfter.IsZero() {
-		db = db.Where("jam_mulai > ?", filter.JamMulaiAfter)
+	if !filter.JamAfter.IsZero() {
+		db = db.Where("jam_mulai > ?", filter.JamAfter)
 	}
 
-	if !filter.JamMulaiBefore.IsZero() {
-		db = db.Where("jam_mulai < ?", filter.JamMulaiBefore)
+	if !filter.JamBefore.IsZero() {
+		db = db.Where("jam_mulai < ?", filter.JamBefore)
 	}
 
 	if filter.UserID != 0 {
@@ -210,12 +210,12 @@ func (u *JadwalRepositoryImpl) CountJadwalFilter(ctx context.Context, filter *pa
 		query = query.Where("name = ?", filter.Name)
 	}
 
-	if !filter.JamMulaiAfter.IsZero() {
-		query = query.Where("jam > ?", filter.JamMulaiAfter)
+	if !filter.JamAfter.IsZero() {
+		query = query.Where("jam_mulai > ?", filter.JamAfter)
 	}
 
-	if !filter.JamMulaiBefore.IsZero() {
-		query = query.Where("jam < ?", filter.JamMulaiBefore)
+	if !filter.JamBefore.IsZero() {
+		query = query.Where("jam_mulai < ?", filter.JamBefore)
 	}
 
 	if filter.UserID != 0 {

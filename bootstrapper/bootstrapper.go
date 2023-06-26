@@ -31,7 +31,7 @@ func InitController(e *echo.Echo, db *gorm.DB, conf map[string]string) {
 
 	// Absen
 	absenRepository := RepositoryPkg.NewAbsenRepositoryImpl(db)
-	absenService := ServicePkg.NewAbsenServiceImpl(absenRepository)
+	absenService := ServicePkg.NewAbsenServiceImpl(absenRepository, jadwalRepository)
 	absenController := ControllerPkg.NewAbsenController(absenService, jwtService)
 
 	route := routes.NewRoutes(userController, absenController, jadwalController)

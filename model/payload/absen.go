@@ -90,16 +90,18 @@ func NewGetSingleAbsenResponse(absen *model.Absen) *GetSingleAbsenResponse {
 }
 
 type GetPageAbsenResponse struct {
-	ID           uint      `json:"id"`
-	UserID       uint      `json:"user_id"`
-	MahasiswaID  uint      `json:"mahasiswa_id"`
-	JadwalID     uint      `json:"jadwal_id"`
-	Matakuliah   string    `json:"matakuliah"`
-	TimeAttemp   time.Time `json:"time_attemp"`
-	Status       string    `json:"status"`
-	Location     string    `json:"location"`
-	Image        string    `json:"image"`
-	IsKonfirmasi bool      `json:"is_konfirmasi"`
+	ID           uint            `json:"id"`
+	UserID       uint            `json:"user_id"`
+	MahasiswaID  uint            `json:"mahasiswa_id"`
+	JadwalID     uint            `json:"jadwal_id"`
+	Matakuliah   string          `json:"matakuliah"`
+	TimeAttemp   time.Time       `json:"time_attemp"`
+	Status       string          `json:"status"`
+	Location     string          `json:"location"`
+	Image        string          `json:"image"`
+	IsKonfirmasi bool            `json:"is_konfirmasi"`
+	Mahasiswa    model.Mahasiswa `json:"mahasiswa"`
+	Jadwal       model.Jadwal    `json:"jadwal"`
 }
 
 func NewGetPageAbsenResponse(absen *model.Absen) *GetPageAbsenResponse {

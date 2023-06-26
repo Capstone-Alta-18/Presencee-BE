@@ -14,13 +14,15 @@ import (
 
 type (
 	AbsenServiceImpl struct {
-		absenRepository repository.AbsenRepository
+		absenRepository  repository.AbsenRepository
+		jadwalRepository repository.JadwalRepository
 	}
 )
 
-func NewAbsenServiceImpl(absenRepository repository.AbsenRepository) usecase.AbsenService {
+func NewAbsenServiceImpl(absenRepository repository.AbsenRepository, jadwalRepository repository.JadwalRepository) usecase.AbsenService {
 	return &AbsenServiceImpl{
-		absenRepository: absenRepository,
+		absenRepository:  absenRepository,
+		jadwalRepository: jadwalRepository,
 	}
 }
 
@@ -77,7 +79,18 @@ func (u *AbsenServiceImpl) GetPageAbsens(ctx context.Context, page int, limit in
 		return nil, 0, err
 	}
 
-	return payload.NewGetPageAbsensResponse(absens), count, nil
+	var absenResponse = payload.NewGetPageAbsensResponse(absens)
+
+	for i := range *absens {
+		mahasiswa, err := database.GetMahasiswaByID((*absenResponse)[i].MahasiswaID)
+		_ = err
+		jadwal, err := u.jadwalRepository.GetSingleJadwal(ctx, (*absenResponse)[i].JadwalID)
+		_ = err
+		(*absenResponse)[i].Mahasiswa = mahasiswa
+		(*absenResponse)[i].Jadwal = *jadwal
+	}
+
+	return absenResponse, count, nil
 }
 
 func (u *AbsenServiceImpl) GetFilterAbsens(ctx context.Context, page int, limit int, filter *payload.AbsenFilter) (*payload.GetPageAbsensResponse, int64, error) {
@@ -98,8 +111,18 @@ func (u *AbsenServiceImpl) GetFilterAbsens(ctx context.Context, page int, limit 
 		return nil, 0, err
 	}
 
-	absenPayload := payload.NewGetPageAbsensResponse(absens)
-	return absenPayload, count, nil
+	var absenResponse = payload.NewGetPageAbsensResponse(absens)
+
+	for i := range *absens {
+		mahasiswa, err := database.GetMahasiswaByID((*absenResponse)[i].MahasiswaID)
+		_ = err
+		jadwal, err := u.jadwalRepository.GetSingleJadwal(ctx, (*absenResponse)[i].JadwalID)
+		_ = err
+		(*absenResponse)[i].Mahasiswa = mahasiswa
+		(*absenResponse)[i].Jadwal = *jadwal
+	}
+
+	return absenResponse, count, nil
 }
 
 func (u *AbsenServiceImpl) CountRiwayatMatakuliah(ctx context.Context, filter *payload.AbsenFilter) (int64, error) {
